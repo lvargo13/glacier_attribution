@@ -72,7 +72,15 @@ outputs: print in command line mean variation, std, min, max
 # output_climscen
 works with all output of running attribution 
 
+both read in attribution simulations for individual glaciers and calculate probabilities: 
+PDDout_read_prob.m for no parameter sweep
+PDDout_read_prob_loop.m to loop through 1 glacier with multiple parameter options
+outputs: plots of natural vs present probabilites
 
+to get probabilities and likelihoods for individual glaciers: 
+bootstrp_sl_prob.m for no parameter sweep
+bootstrp_sl_prob_loop.m for 1 glacier with multiple parameter options
+outputs: prints in command line the probababilites and likelihoods 
 
 
 

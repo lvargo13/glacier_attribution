@@ -1,0 +1,79 @@
+
+readme for full glacier attribution workflow 
+
+Lauren Vargo
+
+
+# Adjusting GCM output
+
+this is all done in /Volumes/arc_03/vargola/glacier_attribution/climate_data
+main script is /Volumes/arc_03/vargola/glacier_attribution/climate_data/gcm_vcsn_adj.m
+It calls a few functions in the same directory
+Right now, the script reads in a) CMIP5 GCM output and b) CESM LE output for i) natural and ii) rcp scenarios and adjusts VCSN with the difference between (GCM scenarios and GCM base)
+
+A few hardcoded bits in gcm_vcsn_adj.m:
+1) the lat long of the glacier being used
+note: I've been using small glaciers and therefore just one VCSN grid box. Brian has suggested using more if modeling a bigger glacier like Tasman. Also, I've tried using all surrounding VCSN grid boxes and interpolating for Brewster, and there was minimal differences. 
+2) where to save the adjusted output
+can also edit: 
+3) base time period (basey) (line 39), for this I use Historical simulations
+4) GCM time periods (yr_want) (line 96)
+* the script also reads in GCM data somewhat based on the structure I have it stored, could need to either 1) store GCM output in the same way or 2) adjust script
+
+
+# running PDD model 
+
+this is all done in /Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday
+
+sa_pdd_parameters.m sets model parameters
+
+the main model is /Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/pdd_run_calcshade.m 
+which then also calls other functions that are in the /Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/ directory
+
+I have multiple different scripts for running pdd_run_calcshade.m : 
+
+1) sa_pdd.m runs the model (the basic script I started with, just runs using VCSN- so for model calibration)
+
+2) sa_pdd_brewster.m should be sa_pdd.m but specifically for Brewster
+
+3) sa_pdd_gcm.m is for running the pdd model with adjusted GCM output 
+runs all GCM output (either CMIP5 GCM or CESM) at a time for one glacier
+
+4) sa_pdd_gcm_loop.m runs pdd model with adjusted GCM output
+runs CMIP5 and CESM for as many glaciers as wanting to loop through
+ugly hard coding here: a) all of the input that is commented out right now in lines 5 -- 14 (or lines 16 -- 25)
+b) right now for different glaciers means different adjustments to VCSN precip and temp and temp and radiation factors, these need to be commented out in sa_pdd_parameters and then set here
+
+5) sa_pdd_gcm_loop_param.m  runs pdd model with adjusted GCM output 
+runs for 1 glaciers, but reads in output of parameter sweep (param_test/param_test_SL.m) which includes all the parameter combinations
+
+Input for all: main input needed before running is DEM (I think)
+Right now I have 2 DEM inputs: 
+a) a high res SFM one over the glacier, this is the area over which pdd model is calculated (I've used 10 m)
+b) a lower res 25 m Landcare DEM. this is used to calculate the shade grid which is then interpolated to the 10 m grid. This should include the surrounding peaks that could influence shading 
+
+
+
+# parameter sweep and validation 
+1) run /degreeday/run_param_test.m (for brewster with only temperature and radiation factors swept throug)
+or /degreeday/run_param_test_SL.m (for everything else- goes through temp and rad factors, and temp and precip adjustments)
+
+2) run param_test/param_test_SL.m (for most SL glaciers- other scripts for Brewster MB, SL, and Rolleston MB)
+inputs: i) output of run_param_test.m, ii) glacier name, ii) measured SL or MB data
+notes: adjust thresholds for different glaciers
+outputs: i) plots showing comparions of all parameters under selected thresholds with measured data, ii) file labeled glacier_psuiteSL.mat (this is the input into sa_pdd_gcm_loop_param.m)
+
+leave-1-year-out validation (param_test_lvyrout_SL_loop.m) 
+in param_test_SL.m, one output is printed in command line the index of the parameter combination that fits best with measured data
+inputs: glacier, index of best parameter combination
+outputs: print in command line mean variation, std, min, max
+
+
+# output_climscen
+works with all output of running attribution 
+
+
+
+
+
+

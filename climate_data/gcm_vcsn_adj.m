@@ -16,28 +16,14 @@ clear
 % of repeating times 
 
 %--- User input -------- 
-glac = 'brew_tst/';  % name of glacier, e.g. 'rolleston/'
-lat_glac = -44.072893 ; % get index of glacier of interest
-lon_glac = 169.436038 ;
-% lat_glac = -44.59 ;  % parkpass
-% lon_glac = 168.23 ;
-% lat_glac = -44.165 ;  % thurneyson
-% lon_glac = 169.598 ;
-% lat_glac = -43.01 ;  % kahutea
-% lon_glac = 171.376 ;
-% lat_glac = -43.355 ;  % southcameron
-% lon_glac = 170.988 ;
-% lat_glac = -43.32 ;  % vertebrae
-% lon_glac = 170.615 ; 
-% lat_glac = -43.47 ;  % salisbury
-% lon_glac = 170.22 ;
-% lat_glac = -43.511 ;  % chancellor
-% lon_glac = 170.125 ;
+glac = 'parkpass/';  % name of glacier, e.g. 'rolleston/'
+lat_glac = -44.59 ;  % parkpass
+lon_glac = 168.23 ;
 
 GCM = 1;  % 1 to run, 0 to not
-CESM = 0; 
-%basey = [1961 1990]; 
-basey = [1980 2004];
+CESM = 1; 
+basey = [1961 1990]; 
+
 
 %--- input and output -------- 
 gcm_path = '/Volumes/arc_03/vargola/glacier_attribution/climate_data/GCM_output/' ;
@@ -92,12 +78,9 @@ if GCM == 1
 gcm_dir = dir(gcm_path);
 gcm_dir = gcm_dir(4:end);  % first 3 are non-dir
 
-% clim_scen = {'rcp85'; 'historicalNat'}; 
-% clim_out = {'present'; 'past'}; 
-% yr_want = [2006 2026; 1901 2005] ; 
-clim_scen = {'historical'}; 
-clim_out = {'tst'}; 
-yr_want = [1980 2004] ; 
+clim_scen = {'rcp85'; 'historicalNat'}; 
+clim_out = {'present'; 'past'}; 
+yr_want = [2006 2026; 1901 2005] ; 
 
 for i = 1:length(gcm_dir)
 
@@ -108,7 +91,7 @@ files_meta = strcat(data_path,'*.nc');
 f_meta = dir(files_meta) ;
 lat = ncread(strcat(data_path,f_meta(1).name), 'lat') ;  % 1 doesn't matter, all have lat lon
 lon = ncread(strcat(data_path,f_meta(1).name), 'lon') ;
-%lon = lon - 180 ;
+
 % find index of GCM for glacier of interest 
 [~, glat] = min(abs(lat_glac-lat));
 [~, glon] = min(abs(lon_glac-lon));
@@ -143,8 +126,7 @@ cesm_runs = 34;   %right now using 34 CESM, change if use more/less of LE
 
 % lat long for glacier of interest (same for all of ensemble)
 lat = ncread([cesm_path,'TS/',cesm_ts(1).name], 'lat') ;  % 1 doesn't matter
-lon = ncread([cesm_path,'TS/',cesm_ts(1).name], 'lon') ;
-%lon = lon - 180 ; 
+lon = ncread([cesm_path,'TS/',cesm_ts(1).name], 'lon') ; 
 [~, clat] = min(abs(lat_glac-lat));  % find index of GCM for glacier of interest 
 [~, clon] = min(abs(lon_glac-lon));
 
@@ -176,8 +158,8 @@ for ii = 1:length(clim_out)  % # climate scenarios
     % --- calculate GCM anomalies
     [clim_adj, climd_adj, clim_vcsn, anom] = calc_gcm_anom(t,p,s,clim_force,clim_base);  
     
-%     sv = strcat(out_cesm,'cesm_le_',num2str(ind),'_',co{1},'.mat'); 
-%     save(sv,'clim_vcsn','clim_base', 'clim_force','climd_vcsn','clim_adj','climd_adj','wantyr','elev','anom');
+    sv = strcat(out_cesm,'cesm_le_',num2str(ind),'_',co{1},'.mat'); 
+    save(sv,'clim_vcsn','clim_base', 'clim_force','climd_vcsn','clim_adj','climd_adj','wantyr','elev','anom');
 end
 end
 end

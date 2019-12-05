@@ -1,7 +1,7 @@
 function [ clim_b ] = get_cesm_base( cesm_path,ind,lon,lat,styr,edyr )
 % Get CESM historic data (t and p) to compare forcing with
 %   Read in data, get the grid box that includes the center of the glacier
-% hardcoded: right now f_in depends on 20thcent runs being listed 1:34
+% hardcoded: right now f_in depends on 20thcent runs being listed 
 
 hist_start_want = styr ; % start is 1850 first run, 1920 rest
 hist_end_want = edyr; % end of all runs

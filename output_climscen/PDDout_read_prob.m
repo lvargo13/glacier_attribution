@@ -119,7 +119,6 @@ end
 % plot
 figure; 
 mb_bins = mb_bins -(mb_bins_step/2); 
-%figure
 stairs(mb_bins,mb_prob(:,1),'r','LineWidth',2); hold on 
 stairs(mb_bins,mb_prob(:,2),'k','LineWidth',2)
 stairs(mb_bins,mb_prob(:,3),'r:','LineWidth',2)
@@ -149,7 +148,6 @@ legend('GCM NAT','GCM present','CESM NAT','CESM present')
 
 % percent chances
 v = exist('glac_18_mb');
-
 if v ~= 0
     c_pres_p = (length(find(c_pres<=glac_11_mb)) / length(c_pres)) *100;
     c_past_p = (length(find(c_past<=glac_11_mb)) / length(c_past)) *100;
@@ -158,9 +156,6 @@ if v ~= 0
 end
 
 %----- snowline probability
-% c_past_sl(c_past_sl<1515)=1515; % only for park pass
-% g_past_sl(g_past_sl<1515)=1515;
-
 maxsl = max([max(c_pres_sl),max(g_pres_sl),max(c_past_sl),max(g_past_sl)])+(sl_bins_step*3); 
 minsl = min([min(c_pres_sl),min(g_pres_sl),min(c_past_sl),min(g_past_sl)])-(sl_bins_step*3); 
 mb_bins = minsl:sl_bins_step:maxsl;
@@ -179,7 +174,6 @@ end
 
 % plot
 mb_bins = mb_bins -(sl_bins_step/2); 
-
 figure
 stairs(mb_bins,mb_prob(:,1),'r','LineWidth',2); hold on 
 stairs(mb_bins,mb_prob(:,2),'k','LineWidth',2)

@@ -2,14 +2,16 @@
 
 % 1) read in all gcm past and pres
 % 2) use bootstrapping to get uncertainties
-% 3) save mean, and 95% confidence level
+% 3) print and save(if wanted) mean, and 95% confidence level
 
 clear
 
-glac = 'brewster_ps*/';
+glac = 'ridge_p*/';
 sl=1;  % flag, 0 for mb, 1 for sl
 plotflag=1;  % 1 to plot
+savedat=0;  % 1 to save 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch glac
     case 'rolleston_p*/'
         glac_11_sl = 1857 ;
@@ -26,7 +28,7 @@ switch glac
      case 'glenmary_p*/'
         glac_11_sl = 2297 ;
         glac_18_sl = 2327 ;   
-     case 'ridge/'
+     case 'ridge_p*/'
         glac_11_sl = 2436 ;
         glac_18_sl = 2434 ;   
      case 'thurneyson_p*/'
@@ -96,10 +98,8 @@ else
     past_18p = (length(find(past>=glac_18_sl)) / length(past)) *100;
     pres_18p = (length(find(pres>=glac_18_sl)) / length(pres)) *100;
 end
-
 meanlike11 = pres_11p/past_11p;
 meanlike18 = pres_18p/past_18p;
-
 
 % --------- bootstrapping
 num_bs = 10000;
@@ -175,28 +175,18 @@ for i = 1:length(varall)
     tmp = varall{i}; 
     tmp(isnan(tmp)) = 0;
     st = sort(tmp); 
-%     if st(250) > 0 
-        po(2,i) = st(250);
-%     elseif st(250) == 0 
-%         po(2,i) = min(st(st>0));
-%     end
-%     if st(9750) < inf
-        po(3,i) = st(9750);
-%     elseif st(9750) == inf
-%         po(3,i) = max(st(st<inf));
-%     end
+    po(2,i) = st(250);
+    po(3,i) = st(9750);
 end
 po = [(po(:,1:4).*100) po(:,5:6)]; 
-
-% calculate uncertainties using distributions
-%po = uncert_distrib(varall); 
+po  % print in command line
 
 % --------- save
-% if sl == 0
-%     sv = [ glac(1:end-1) '_mb_prob'];
-% else
-%     sv = [ glac(1:end-1) '_sl_prob']; 
-% end
-% save(sv, 'po');
-
-po
+if savedat == 1
+    if sl == 0
+        sv = [ glac(1:end-1) '_mb_prob'];
+    else
+        sv = [ glac(1:end-1) '_sl_prob']; 
+    end
+    save(sv, 'po');
+end

@@ -1,6 +1,6 @@
 function [ clim_f ] = get_cesm_force( cesm_path,ind,clon,clat,wantyr )
 % Get cesm forcing data
-%   in: cesm_runs- number of CESM runs in LE (34 now, could be 40)
+%   in: cesm_runs- number of CESM runs in LE 
 %   getting 20th century vc rcp85 is a bit ugly
 
 clim_mat = []; 

@@ -1,62 +1,63 @@
 % read in output files of sa_pdd_gcm_loop_param
 % calculate and plot probability
+% outputs: plots of natural and present probabilities 
+% can also see probabilities without bootstrapping here
 
-glac = 'brewster_p1*/';
-glacs_out = zeros(11,1); 
+glac = 'ridge_p*/';
+glacs_out = zeros(22,1); % hardcoded- see how many param. combos were run
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% brewster
-glac_11_sl = 2303 ; 
-glac_18_sl = 2311 ;  
-glac_11_mb = -1728 ; 
-glac_18_mb = -2217;
-glac_18_mbsig = 323;
-glac_11_mbsig = 187;
-sl_bins = 1600:50:2400;
-
-% % rolly
-% glac_11_sl = 1857 ;
-% glac_18_sl = 1847 ; 
-% glac_11_mb = -2039;
-% glac_18_mb = -2456;
-% sl_bins = 1725:20:1905;
-
-% parkpass
-% glac_18_sl = 1966 ; 
-% glac_11_sl = 2040 ; 
-% sl_bins = 1450:50:2250;
-
-% south cameron
-% glac_18_sl = 2426 ; 
-% glac_11_sl = 2395 ; 
-% sl_bins = 2000:35:2700; 
-
- %salisbury 
-% glac_18_sl = 1967 ; 
-% glac_11_sl = 1967 ; % no 2011 SL, so just to run
-% sl_bins = 1300:50:2500;
-
-% thurneyson
-% glac_18_sl = 2232 ; 
-% glac_11_sl = 2125 ; 
-% sl_bins = 1750:30:2350;
-
-% ridge
-% glac_11_sl = 2436 ;
-% glac_18_sl = 2434 ;
-% sl_bins = 2100:25:2500;
-
-% vertebrae12
-% glac_18_sl = 2086 ; 
-% glac_11_sl = 2094 ; 
-% sl_bins = 1700:40:2200;
-
-% glenmary 
-% glac_11_sl = 2297 ;
-% glac_18_sl = 2327 ; 
-% sl_bins = 2020:30:2490; 
+mbplt = 0;  % 0 if no MB, 1 if yes MB
+yrprob = 1; % 1 for 2011 probabilities; not 1 for 2018 prob
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+switch glac
+    case 'brewster_p*/'
+        glac_11_sl = 2303 ; 
+        glac_18_sl = 2311 ;  
+        glac_11_mb = -1728 ; 
+        glac_18_mb = -2217;
+        glac_18_mbsig = 323;
+        glac_11_mbsig = 187;
+        sl_bins = 1600:50:2400;
+    case 'rolleston_p*/'
+        glac_11_sl = 1857 ;
+        glac_18_sl = 1847 ; 
+        glac_11_mb = -2039;
+        glac_18_mb = -2456;
+        sl_bins = 1725:20:1905;
+    case 'parkpass_p*/'
+        glac_18_sl = 1966 ; 
+        glac_11_sl = 2040 ; 
+        sl_bins = 1450:50:2250;
+    case 'southcameron_p*/'
+        glac_18_sl = 2426 ; 
+        glac_11_sl = 2395 ; 
+        sl_bins = 2000:35:2700; 
+    case 'salisbury_p*/'
+        glac_18_sl = 1967 ; 
+        glac_11_sl = 1967 ; % no 2011 SL, so just to run
+        sl_bins = 1300:50:2500;
+    case 'thurneyson_p*/'
+        glac_18_sl = 2232 ; 
+        glac_11_sl = 2125 ; 
+        sl_bins = 1750:30:2350;
+    case 'ridge_p*/'
+        glac_11_sl = 2436 ;
+        glac_18_sl = 2434 ;
+        sl_bins = 2050:40:2600;
+    case 'vertebrae12_p*/'
+        glac_18_sl = 2086 ; 
+        glac_11_sl = 2094 ; 
+        sl_bins = 1700:40:2200;
+    case 'glenmary_p*/' 
+        glac_11_sl = 2297 ;
+        glac_18_sl = 2327 ; 
+        sl_bins = 2020:30:2490; 
+end 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%---- read in data
 a = 4;  % scenarios
 mb_bins = -3450:300:3450;
 
@@ -79,8 +80,6 @@ fi_c = dir([in_dir_c glac]);
 
 mb_prob = zeros(length(mb_bins),a); 
 sl_prob = zeros(length(sl_bins),a); 
-
-
 for ii = 1:length(glacs_out)  
  
 % read in gcm data
@@ -131,70 +130,66 @@ c_pres_sla(:,ii) = c_pres_sl;
 c_past_sla(:,ii) = c_past_sl;
 end
 
-% plot mass balance 
-bns = zeros(length(mb_bins),2, 3); % 2 past and pres
-for j = 1:length(mb_bins)
-    bns(j,1,1) = min([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); % past
-    bns(j,1,2) = mean([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); 
-    bns(j,1,3) = max([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); 
-    bns(j,2,1) = min([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); %pres
-    bns(j,2,2) = mean([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
-    bns(j,2,3) = max([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
+%---- plot mass balance
+if mbplt == 1
+    bns = zeros(length(mb_bins),2, 3); % 2 past and pres
+    for j = 1:length(mb_bins)
+        bns(j,1,1) = min([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); % past
+        bns(j,1,2) = mean([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); 
+        bns(j,1,3) = max([squeeze(mbp(j,1,:)); squeeze(mbp(j,3,:))]); 
+        bns(j,2,1) = min([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); %pres
+        bns(j,2,2) = mean([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
+        bns(j,2,3) = max([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
+    end
+
+    figure;
+    stairs(mb_bins,bns(:,1,2),'k','LineWidth',2); hold on
+    stairs(mb_bins,bns(:,2,2),'r','LineWidth',2)
+    legend('natural','present')
+    stairs(mb_bins,bns(:,1,1),'k'); hold on
+    stairs(mb_bins,bns(:,1,3),'k')
+    stairs(mb_bins,bns(:,2,1),'r')
+    stairs(mb_bins,bns(:,2,3),'r')
+    for ii = 1:length(mb_bins)-1
+        x2 = [mb_bins(ii) mb_bins(ii+1) mb_bins(ii+1) mb_bins(ii)];
+        fill_past= [bns(ii,1,1) bns(ii,1,1) bns(ii,1,3) bns(ii,1,3)];
+        fill_pres= [bns(ii,2,1) bns(ii,2,1) bns(ii,2,3) bns(ii,2,3)];
+        patch(x2, fill_past, 'k','FaceAlpha',.3,'LineStyle','none'); hold on
+        fill(x2, fill_pres, 'r','FaceAlpha',.3,'LineStyle','none')
+    end
+
+    plot([glac_11_mb, glac_11_mb], [0, 0.25],'--k');
+    plot([glac_11_mb+glac_11_mbsig, glac_11_mb+glac_11_mbsig], [0, 0.25],':k');
+    plot([glac_11_mb-glac_11_mbsig, glac_11_mb-glac_11_mbsig], [0, 0.25],':k');
+    plot([glac_18_mb, glac_18_mb], [0, 0.25],'--k');
+    plot([glac_18_mb+glac_18_mbsig, glac_18_mb+glac_18_mbsig], [0, 0.25],':k');
+    plot([glac_18_mb-glac_18_mbsig, glac_18_mb-glac_18_mbsig], [0, 0.25],':k');
+    xlabel('Mass Balance (mm w.e.)')
+    ylabel('Probability')
+
+    % percent chances 
+    % (this is also done in bootstrp_sl_prob* including bootstrapping)
+    c_pres_p = zeros(length(glacs_out),1); 
+    c_past_p = zeros(length(glacs_out),1);
+    g_pres_p = zeros(length(glacs_out),1);
+    g_past_p = zeros(length(glacs_out),1);
+    if yrprob == 1
+        f = glac_11_mb;
+    else
+        f = glac_18_mb;
+    end
+    for ii = 1:length(glacs_out)
+        c_pres_p(ii) = (length(find(c_pres_a(:,ii)<=f)) / length(c_pres_a)) *100;
+        c_past_p(ii) = (length(find(c_past_a(:,ii)<=f)) / length(c_past_a)) *100;
+        g_pres_p(ii) = (length(find(g_pres_a(:,ii)<=f)) / length(g_pres_a)) *100;
+        g_past_p(ii) = (length(find(g_past_a(:,ii)<=f)) / length(g_past_a)) *100;  
+    end
+    pres = [g_pres_p; c_pres_p];
+    past = [g_past_p; c_past_p];
 end
 
-figure;
-stairs(mb_bins,bns(:,1,2),'k','LineWidth',2); hold on
-stairs(mb_bins,bns(:,2,2),'r','LineWidth',2)
-legend('natural','present')
-stairs(mb_bins,bns(:,1,1),'k'); hold on
-stairs(mb_bins,bns(:,1,3),'k')
-stairs(mb_bins,bns(:,2,1),'r')
-stairs(mb_bins,bns(:,2,3),'r')
-for ii = 1:length(mb_bins)-1
-    x2 = [mb_bins(ii) mb_bins(ii+1) mb_bins(ii+1) mb_bins(ii)];
-    fill_past= [bns(ii,1,1) bns(ii,1,1) bns(ii,1,3) bns(ii,1,3)];
-    fill_pres= [bns(ii,2,1) bns(ii,2,1) bns(ii,2,3) bns(ii,2,3)];
-    patch(x2, fill_past, 'k','FaceAlpha',.3,'LineStyle','none'); hold on
-    fill(x2, fill_pres, 'r','FaceAlpha',.3,'LineStyle','none')
-end
 
-plot([glac_11_mb, glac_11_mb], [0, 0.25],'--k');
-plot([glac_11_mb+glac_11_mbsig, glac_11_mb+glac_11_mbsig], [0, 0.25],':k');
-plot([glac_11_mb-glac_11_mbsig, glac_11_mb-glac_11_mbsig], [0, 0.25],':k');
-plot([glac_18_mb, glac_18_mb], [0, 0.25],'--k');
-plot([glac_18_mb+glac_18_mbsig, glac_18_mb+glac_18_mbsig], [0, 0.25],':k');
-plot([glac_18_mb-glac_18_mbsig, glac_18_mb-glac_18_mbsig], [0, 0.25],':k');
-xlabel('Mass Balance (mm w.e.)')
-ylabel('Probability')
-
-% percent chances
-c_pres_p = zeros(length(glacs_out),1); 
-c_past_p = zeros(length(glacs_out),1);
-g_pres_p = zeros(length(glacs_out),1);
-g_past_p = zeros(length(glacs_out),1);
-f = glac_11_mb;
-for ii = 1:length(glacs_out)
-    c_pres_p(ii) = (length(find(c_pres_a(:,ii)<=f)) / length(c_pres_a)) *100;
-    c_past_p(ii) = (length(find(c_past_a(:,ii)<=f)) / length(c_past_a)) *100;
-    g_pres_p(ii) = (length(find(g_pres_a(:,ii)<=f)) / length(g_pres_a)) *100;
-    g_past_p(ii) = (length(find(g_past_a(:,ii)<=f)) / length(g_past_a)) *100;  
-end
-
-[min(g_past_p) mean(g_past_p) max(g_past_p)];
-[min(c_past_p) mean(c_past_p) max(c_past_p)];
-[min(g_pres_p) mean(g_pres_p) max(g_pres_p)];
-[min(c_pres_p) mean(c_pres_p) max(c_pres_p)];
-
-pres = [g_pres_p; c_pres_p];
-past = [g_past_p; c_past_p];
-[min(past) mean(past) max(past)];
-[min(pres) mean(pres) max(pres)];
-mean(pres)/mean(past);
-max(pres)/min(past); % max like
-min(pres)/max(past); % min like
-
-%----- snowline probability
-% plot
+%---- plot snowline probability
 bs = zeros(length(sl_bins),2, 3); % 2 past and pres
 for j = 1:length(sl_bins)
     bs(j,1,1) = min([squeeze(slp(j,1,:)); squeeze(slp(j,3,:))]); % past
@@ -228,44 +223,22 @@ xlabel('snowline elevation (m)')
 ylabel('Probability')
 
 % percent chances
+% (this is also done in bootstrp_sl_prob* including bootstrapping)
 c_pres_slp = zeros(length(glacs_out),1); 
 c_past_slp = zeros(length(glacs_out),1);
 g_pres_slp = zeros(length(glacs_out),1);
 g_past_slp = zeros(length(glacs_out),1);
-f = glac_11_sl;
+if yrprob == 1
+    f = glac_11_sl;
+else
+    f = glac_18_sl;
+end
 for ii = 1:length(glacs_out)
     c_pres_slp(ii) = (length(find(c_pres_sla(:,ii)>=f)) / length(c_pres_sla)) *100;
     c_past_slp(ii) = (length(find(c_past_sla(:,ii)>=f)) / length(c_past_sla)) *100;
     g_pres_slp(ii) = (length(find(g_pres_sla(:,ii)>=f)) / length(g_pres_sla)) *100;
     g_past_slp(ii) = (length(find(g_past_sla(:,ii)>=f)) / length(g_past_sla)) *100;   
 end
-
 pressl = [g_pres_slp; c_pres_slp];
 pastsl = [g_past_slp; c_past_slp];
-[min(pastsl) mean(pastsl) max(pastsl)]
-[min(pressl) mean(pressl) max(pressl)]
-mean(pressl)/mean(pastsl)
-max(pressl)/min(pastsl) % max like
-min(pressl)/max(pastsl) % min like
-
  
-% sv = [ glac(1:end-1) '_sl_prob']; 
-% save(sv, 'c_pres_sl_11_p','c_past_sl_11_p','g_pres_sl_11_p','g_past_sl_11_p','c_pres_sl_18_p','c_past_sl_18_p','g_pres_sl_18_p','g_past_sl_18_p');
-
-% % ---- normalize --------------------
-% norm_bins = linspace(0,1,20);
-% glac_norm_prob = zeros(length(norm_bins),a); 
-% 
-% for cs = 1:4
-%   cs_var = climscen{cs};
-%   cs_var = cs_var(~isnan(cs_var));  % get rid of nans
-%   glac_norm = (cs_var - min(cs_var)) / ( max(cs_var) - min(cs_var) );
-%   for i = 1:length(cs_var)
-%       [~, ind] = min(abs(norm_bins-glac_norm(i)));  % get ind of closest bin
-%       glac_norm_prob(ind,cs) = glac_norm_prob(ind,cs)+1;
-%   end
-%    glac_norm_prob(:,cs) = glac_norm_prob(:,cs) / length(cs_var); 
-% end
-% 
-% sv = [ glac(1:end-1) '_norm']; 
-% save(sv, 'glac_norm_prob');

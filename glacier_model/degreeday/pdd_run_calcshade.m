@@ -73,7 +73,6 @@ for ii=1:num_timesteps
     
     % Surface radiation
     radd = zeros(size(temp,1),size(temp,2), ts);
-    %sh = radd;
     for i = 1:ts
       [radd(:,:,i),~] = ebm_inso_inst_calcshade(dem,rad_dem,R,Xq,Yq,csize,slope,aspect,cloud,za(i),aa(i),Sa(:,:,i));
     end

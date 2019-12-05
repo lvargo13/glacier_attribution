@@ -44,11 +44,9 @@ function [ecc,long_perh,delta,lambda] = inso(lat,day)
 %   eisenman@fas.harvard.edu
 
 % === Get orbital parameters ===
-%[ecc,epsilon,omega]=orbital_parameters(kyear); % function is below in this file
 ecc = 0.017236 ;
 epsilon = 0.409209896422591 ;
 omega = 4.910832916336445 ;
-
 
 % For output of orbital parameters
 long_perh=omega*180/pi;
@@ -66,16 +64,5 @@ lambda=lambda_m+(2*ecc-1/4*ecc.^3).*sin(lambda_m-omega)+...
   (5/4)*ecc.^2.*sin(2*(lambda_m-omega))+(13/12)*ecc.^3.*sin(3*(lambda_m-omega));
 
 delta=asin(sin(epsilon).*sin(lambda)); % declination of the sun
-
-%lat=lat*pi/180; % latitude
-% Ho=acos(-tan(lat).*tan(delta)); % hour angle at sunrise/sunset
-% % no sunrise or no sunset: Berger 1978 eqn (8),(9)
-% Ho( ( abs(lat) >= pi/2 - abs(delta) ) & ( lat.*delta > 0 ) )=pi;
-% Ho( ( abs(lat) >= pi/2 - abs(delta) ) & ( lat.*delta <= 0 ) )=0;
-% 
-% % Insolation: Berger 1978 eq (10)
-% So=1365; % solar constant (W/m^2)
-% Fsw=So/pi*(1+ecc.*cos(lambda-omega)).^2 ./ (1-ecc.^2).^2 .* ...
-%     ( Ho.*sin(lat).*sin(delta) + cos(lat).*cos(delta).*sin(Ho) );
 
 

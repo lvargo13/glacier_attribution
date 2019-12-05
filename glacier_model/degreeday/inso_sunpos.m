@@ -14,13 +14,10 @@ So = 1365; % w/m2: solar constant
 hour_angle = (daynum - floor(daynum)) * 2 * pi - pi;        
 
 [ecc,long_perh,delta,lambda] = inso(latitude,daynum);
-%[ecc,long_perh,delta,lambda] = daily_insolation(0,latitude,daynum,1)
-% added lambda as return argument to inso
 
 omega = long_perh * pi/180;
 
-% delta = declination of the sun (= angle between sun ray and
-% equatorial plane)
+% delta = declination of the sun (= angle between sun ray and equatorial plane)
 % Ho = sun angle at sunrise/sunset
 % calculate sun altitude, zenith, azimuth
 % http://www.usc.edu/dept/architecture/mbs/tools/vrsolar/Help/solar_concepts.html
@@ -31,20 +28,9 @@ cos_alt_r = sqrt(1 - sin2alt);
 sunalt = atan(sin_alt_r / cos_alt_r);
 zenith = pi/2 - sunalt;
 
-% original
-% x_azm = sin(hour_angle) * cos(delta);  % adding *-1 makes it work
-% y_azm = (-(cos(hour_angle))*cos(delta)*sin(lat_r))+(cos(lat_r)* sin(delta));
-% azimuth = (-1 * atan2(x_azm, y_azm));
-
-% % works, idk why
 x_azm = sin(hour_angle) * cos(delta);
 y_azm = (-(cos(hour_angle))*cos(delta)*sin(lat_r))+(cos(lat_r)*sin(delta));
 azimuth = atan2(x_azm, y_azm);
-
-% corripio - doesn't make sense- need to use atan2 without the +pi/2
-% x_azm = -1 * sin(hour_angle) * cos(delta);
-% y_azm = (sin(lat_r)*cos(hour_angle)*cos(delta)) -(cos(lat_r)*sin(delta));
-% azimuth = atan( (y_azm/x_azm))+ pi/2;
 
 % calculate instantaneous insolation
 % Get eccentricity factor
@@ -55,7 +41,6 @@ azimuth = atan2(x_azm, y_azm);
 % omega is longitude of the perihelion relative to the moving vernal equinox
 
 eccf  = (( 1. + ecc*cos(lambda-omega) ) / (1. - ecc ^ 2))^2; % berger 1978 eq (13)
-
 S = So * eccf;
 
 return

@@ -8,10 +8,6 @@ global CONFIG
 
 ddf = 0.5:0.06:1.7; %original
 radf = 0.15:0.015:0.25 ;
-% ta = -1.65:0.1:-0.85; 
-% pa = 0.8:0.1:1.7 ;
-
-%runs = length(ddf) * length(radf); 
 
 test_dir = '/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test_postreview/brewster_SL40/';
 

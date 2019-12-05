@@ -15,22 +15,10 @@ lr_mn_mam = -0.0032 ;
 lr_mn_jja = -0.0030 ;
 lr_mn_son = -0.0042 ;
 
-% time starts april 1 and ends march 31
-% if length(yr) == 365
-%  vec1 = [1:61,335:365];  % april may, next march
-%  vec2 = [62:153];  % june july aug
-%  vec3 = [154:244]; % sept oct nov
-%  vec4 = [245:334]; % dec jan feb
-% else
-%  vec1 = [1:61,336:366];  % april may, next march
-%  vec2 = [62:153];  % june july aug
-%  vec3 = [154:244]; % sept oct nov
-%  vec4 = [245:335]; % dec jan feb   
-% end
- vec1 = [1:61,336:length(yr)];  % april may, next march
- vec2 = [62:153];  % june july aug
- vec3 = [154:244]; % sept oct nov
- vec4 = [245:335]; % dec jan feb 
+vec1 = [1:61,336:length(yr)];  % april may, next march
+vec2 = [62:153];  % june july aug
+vec3 = [154:244]; % sept oct nov
+vec4 = [245:335]; % dec jan feb 
 
 tmx_adj = zeros(size(dem,1), size(dem,2), length(yr)); 
 tmn_adj = zeros(size(dem,1), size(dem,2), length(yr)); 

@@ -11,7 +11,6 @@ lon_vcsn = ncread([vcsn_dir,'tmin_N2_1980010100_2017073100_south-island_p05_dail
 
 tmax=ncread([vcsn_dir,'tmax_N2_1980010100_2017073100_south-island_p05_daily.nc'],'tmax');
 tmax=squeeze(tmax(lon_ind,lat_ind,1:end)); %tmin>tmax after that
-%tmax_t=squeeze(ncread([vcsn_dir,'tmax_N2_1980010100_2017073100_south-island_p05_daily.nc'],'time'));
 
 tmin=ncread([vcsn_dir,'tmin_N2_1980010100_2017073100_south-island_p05_daily.nc'],'tmin');
 tmin=squeeze(tmin(lon_ind,lat_ind,1:end));

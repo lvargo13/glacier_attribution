@@ -14,13 +14,10 @@ function [I,shade] = ebm_inso_inst_calcshade(dem,rad_dem,R,Xq,Yq,csize,slope,asp
         
 % daily average insolation and info on sun angle, valid for last 5 MA
 % 0 refers to kyr (thousands of years before present)
-%[zenith, azimuth, S] = inso_sunpos(location.latitude,daynum);
+
 sunalt = pi/2-zenith;  
 
 if zenith<pi/2  % sun is above horizon
-    
-   %azimuth=azimuth+demangle*pi/180; % adjust if dem angle != 0
-   %aspect=aspect+demangle*pi/180; % adjust if dem angle != 0
    costheta=cos(slope)*cos(zenith)+sin(slope)*sin(zenith).*cos(azimuth-aspect);
    full_shade=grd_shade(rad_dem,csize,[azimuth,sunalt]); 
    

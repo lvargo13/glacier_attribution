@@ -6,8 +6,8 @@
 
 clear
 
-glac = 'ridge_p*/';
-sl=1;  % flag, 0 for mb, 1 for sl
+glac = 'brewster_p*/';
+sl=0;  % flag, 0 for mb, 1 for sl
 plotflag=1;  % 1 to plot
 savedat=0;  % 1 to save 
 
@@ -18,13 +18,13 @@ switch glac
         glac_18_sl = 1847 ; 
         glac_11_mb = -2039;
         glac_18_mb = -2456;
-    case 'brewster_ps*/'
+    case 'brewster_p*/'
+        glac_11_mbsig = 187;
+        glac_18_mbsig = 323;
         glac_11_sl = 2303 ; 
         glac_18_sl = 2311 ;  
-        glac_11_mb = -1728  ; 
-        glac_11_mbsig = 187;
-        glac_18_mb = -2217;
-        glac_18_mbsig = 323;
+        glac_11_mb = -1728; 
+        glac_18_mb = -2217+glac_18_mbsig;
      case 'glenmary_p*/'
         glac_11_sl = 2297 ;
         glac_18_sl = 2327 ;   
@@ -179,6 +179,7 @@ for i = 1:length(varall)
     po(3,i) = st(9750);
 end
 po = [(po(:,1:4).*100) po(:,5:6)]; 
+disp('past11, pres11, past_18, pres_18, like11, like18')
 po  % print in command line
 
 % --------- save

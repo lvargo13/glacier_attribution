@@ -1,5 +1,6 @@
 % run through a suite of parameters
 % parameter_tests/param_test.m will compare output with mb data 
+% make sure values looping through are commented in sa_pdd_parameters
 
 gla = 'vertebrae25' ;
 
@@ -14,7 +15,7 @@ pa = 0.8:0.2:1.8;
 
 runs = length(ddf) * length(radf) * length(ta) * length(pa); 
 
-test_dir = ['/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test_postreview/' gla 'SL/'];
+test_dir = ['/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test/' gla 'SL/'];
 
 for ind1 = 1:length(ddf)
     
@@ -32,9 +33,7 @@ for ind1 = 1:length(ddf)
         run('sa_pdd.m')
         
         sv = strcat('run_',num2str(ind1),'_',num2str(ind2),'_',num2str(ind3),'_',num2str(ind4),'.mat'); 
-        save([test_dir sv],'ela','snowth','mmb','CONFIG');
-        %save([test_dir sv],'mmb','mmb_dateadj','rmse','CONFIG');
-            
+        save([test_dir sv],'ela','snowth','mmb','CONFIG');            
             end
         end
     end

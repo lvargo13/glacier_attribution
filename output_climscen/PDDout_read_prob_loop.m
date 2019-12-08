@@ -3,11 +3,9 @@
 % outputs: plots of natural and present probabilities 
 % can also see probabilities without bootstrapping here
 
-glac = 'ridge_p*/';
-glacs_out = zeros(22,1); % hardcoded- see how many param. combos were run
-
+glac = 'rolleston_p*/';
 mbplt = 0;  % 0 if no MB, 1 if yes MB
-yrprob = 1; % 1 for 2011 probabilities; not 1 for 2018 prob
+yrprob = 2; % 1 for 2011 probabilities; not 1 for 2018 prob
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch glac
@@ -61,6 +59,12 @@ end
 a = 4;  % scenarios
 mb_bins = -3450:300:3450;
 
+in_dir_g = '/Volumes/arc_03/vargola/glacier_attribution/output_climscen/gcm/';
+fi_g = dir([in_dir_g glac]);
+in_dir_c = '/Volumes/arc_03/vargola/glacier_attribution/output_climscen/cesm/';
+fi_c = dir([in_dir_c glac]);
+glacs_out = zeros(length(fi_g),1); %how many param. combos were run
+
 mbp = zeros(length(mb_bins),a,length(glacs_out)); % bins x 4 scenarios x number of pruns
 slp = zeros(length(sl_bins),a,length(glacs_out)); % bins x 4 scenarios x number of pruns
 
@@ -72,11 +76,6 @@ g_pres_sla = zeros(320,length(glacs_out));
 g_past_sla = zeros(1664,length(glacs_out)); 
 c_pres_sla = zeros(680,length(glacs_out)); 
 c_past_sla = zeros(1799,length(glacs_out));
-
-in_dir_g = '/Volumes/arc_03/vargola/glacier_attribution/output_climscen/gcm/';
-fi_g = dir([in_dir_g glac]);
-in_dir_c = '/Volumes/arc_03/vargola/glacier_attribution/output_climscen/cesm/';
-fi_c = dir([in_dir_c glac]);
 
 mb_prob = zeros(length(mb_bins),a); 
 sl_prob = zeros(length(sl_bins),a); 
@@ -159,11 +158,7 @@ if mbplt == 1
     end
 
     plot([glac_11_mb, glac_11_mb], [0, 0.25],'--k');
-    plot([glac_11_mb+glac_11_mbsig, glac_11_mb+glac_11_mbsig], [0, 0.25],':k');
-    plot([glac_11_mb-glac_11_mbsig, glac_11_mb-glac_11_mbsig], [0, 0.25],':k');
     plot([glac_18_mb, glac_18_mb], [0, 0.25],'--k');
-    plot([glac_18_mb+glac_18_mbsig, glac_18_mb+glac_18_mbsig], [0, 0.25],':k');
-    plot([glac_18_mb-glac_18_mbsig, glac_18_mb-glac_18_mbsig], [0, 0.25],':k');
     xlabel('Mass Balance (mm w.e.)')
     ylabel('Probability')
 
@@ -186,6 +181,12 @@ if mbplt == 1
     end
     pres = [g_pres_p; c_pres_p];
     past = [g_past_p; c_past_p];
+    [min(g_past_p) mean(g_past_p) max(g_past_p)]
+    [min(c_past_p) mean(c_past_p) max(c_past_p)]
+    [min(g_pres_p) mean(g_pres_p) max(g_pres_p)]
+    [min(c_pres_p) mean(c_pres_p) max(c_pres_p)]
+    [min(g_pres_p)/max(g_past_p) mean(g_pres_p)/mean(g_past_p) max(g_pres_p)/min(g_past_p)]
+    [min(c_pres_p)/max(c_past_p) mean(c_pres_p)/mean(c_past_p) max(c_pres_p)/min(c_past_p)]
 end
 
 
@@ -241,4 +242,11 @@ for ii = 1:length(glacs_out)
 end
 pressl = [g_pres_slp; c_pres_slp];
 pastsl = [g_past_slp; c_past_slp];
+[min(g_past_slp) mean(g_past_slp) max(g_past_slp)]
+[min(c_past_slp) mean(c_past_slp) max(c_past_slp)]
+[min(g_pres_slp) mean(g_pres_slp) max(g_pres_slp)]
+[min(c_pres_slp) mean(c_pres_slp) max(c_pres_slp)]
+[min(g_pres_slp)/max(g_past_slp) mean(g_pres_slp)/mean(g_past_slp) max(g_pres_slp)/min(g_past_slp)]
+[min(c_pres_slp)/max(c_past_slp) mean(c_pres_slp)/mean(c_past_slp) max(c_pres_slp)/min(c_past_slp)]
+
  

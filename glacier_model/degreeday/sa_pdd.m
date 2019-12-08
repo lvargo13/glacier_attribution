@@ -193,7 +193,6 @@ ela = calc_ELA( dem, ice, snowth, run_years, dc.SLThreshMin, dc.SLThreshMax, 30)
 
 if pltsl == 1
     figure;plot(run_years+1,ela,'o--'); hold on; plot(run_years+1,SL,'o--')
-    title('Park Pass')
     ylabel('ELA (m a.s.l.)')
     legend('modeled ELA', 'measured EoSS')
     rmse = sqrt(nanmean((SL - ela').^2));

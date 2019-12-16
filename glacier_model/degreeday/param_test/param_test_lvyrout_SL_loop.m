@@ -8,8 +8,8 @@
 % 2) index of best run in parameter sweep (param_test_SL.m)
 
 
-gla = 'glenmary';
-ind = 1457; % index of best run (from param_test_SL.m)
+gla = 'vertebrae25';
+ind = 1417; % index of best run (from param_test_SL.m)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +78,17 @@ else
        lf_mb = find(rmserr<l_mb+5); 
        lf_mmb = find(mmb_rms<l_mmb+5);
        C = intersect(lf_mb,lf_mmb);
-   end   
+   end  
+   if isempty(C) == 1 ; % is empty
+       lf_mb = find(rmserr<l_mb+6); 
+       lf_mmb = find(mmb_rms<l_mmb+6);
+       C = intersect(lf_mb,lf_mmb);
+   end  
+   if isempty(C) == 1 ; % is empty
+       lf_mb = find(rmserr<l_mb+8); 
+       lf_mmb = find(mmb_rms<l_mmb+8);
+       C = intersect(lf_mb,lf_mmb);
+   end 
 end
 
 if length(C) > 1  % get C to 1

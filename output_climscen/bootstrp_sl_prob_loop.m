@@ -6,8 +6,8 @@
 
 clear
 
-glac = 'brewster_p*/';
-sl=0;  % flag, 0 for mb, 1 for sl
+glac = 'vertebrae25_p*/';
+sl=1;  % flag, 0 for mb, 1 for sl
 plotflag=1;  % 1 to plot
 savedat=0;  % 1 to save 
 
@@ -46,9 +46,9 @@ switch glac
      case 'vertebrae12_p*/'
         glac_18_sl = 2086 ; 
         glac_11_sl = 2094 ; 
-     case 'vertebrae25/'
-        glac_18_sl = 2001 ; 
-        glac_11_sl = 2001 ; 
+     case 'vertebrae25_p*/'
+        glac_18_sl = 2001.8 ; 
+        glac_11_sl = 2001.8 ; 
      case 'parkpass_p*/'
         glac_18_sl = 1966 ; 
         glac_11_sl = 2040 ; 

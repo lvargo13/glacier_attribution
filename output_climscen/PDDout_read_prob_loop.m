@@ -2,10 +2,10 @@
 % calculate and plot probability
 % outputs: plots of natural and present probabilities 
 % can also see probabilities without bootstrapping here
-
+clear
 glac = 'rolleston_p*/';
-mbplt = 0;  % 0 if no MB, 1 if yes MB
-yrprob = 2; % 1 for 2011 probabilities; not 1 for 2018 prob
+mbplt = 1;  % 0 if no MB, 1 if yes MB
+yrprob = 1; % 1 for 2011 probabilities; not 1 for 2018 prob
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch glac
@@ -16,7 +16,7 @@ switch glac
         glac_18_mb = -2217;
         glac_18_mbsig = 323;
         glac_11_mbsig = 187;
-        sl_bins = 1600:50:2400;
+        sl_bins = 1600:50:2450;
     case 'rolleston_p*/'
         glac_11_sl = 1857 ;
         glac_18_sl = 1847 ; 
@@ -38,7 +38,7 @@ switch glac
     case 'thurneyson_p*/'
         glac_18_sl = 2232 ; 
         glac_11_sl = 2125 ; 
-        sl_bins = 1750:30:2350;
+        sl_bins = 1750:40:2390;
     case 'ridge_p*/'
         glac_11_sl = 2436 ;
         glac_18_sl = 2434 ;
@@ -50,7 +50,11 @@ switch glac
     case 'glenmary_p*/' 
         glac_11_sl = 2297 ;
         glac_18_sl = 2327 ; 
-        sl_bins = 2020:30:2490; 
+        sl_bins = 2005:30:2500; 
+    case 'vertebrae25_p*/'
+        glac_18_sl = 2001.8 ; % because SL is over the top
+        glac_11_sl = 2001.8 ; 
+        sl_bins = 1725:30:2075;
 end 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,7 +144,8 @@ if mbplt == 1
         bns(j,2,2) = mean([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
         bns(j,2,3) = max([squeeze(mbp(j,2,:)); squeeze(mbp(j,4,:))]); 
     end
-
+    
+    mb_bins = mb_bins -(diff(mb_bins(1:2))/2);
     figure;
     stairs(mb_bins,bns(:,1,2),'k','LineWidth',2); hold on
     stairs(mb_bins,bns(:,2,2),'r','LineWidth',2)
@@ -200,7 +205,8 @@ for j = 1:length(sl_bins)
     bs(j,2,2) = mean([squeeze(slp(j,2,:)); squeeze(slp(j,4,:))]); 
     bs(j,2,3) = max([squeeze(slp(j,2,:)); squeeze(slp(j,4,:))]); 
 end
-
+ 
+sl_bins = sl_bins -(diff(sl_bins(1:2))/2); 
 figure;
 stairs(sl_bins,bs(:,1,2),'k','LineWidth',2); hold on
 stairs(sl_bins,bs(:,2,2),'r','LineWidth',2)

@@ -2,7 +2,7 @@ clear
 
 % read in output files of sa_pdd_gcm, calculate and plot probability
 
-glac = 'brewster_SL_p3/';
+glac = 'vertebrae12_psuiteSL1/';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch glac
@@ -61,11 +61,11 @@ switch glac
         glac_11_sl = 1834 ; 
         mb_bins_step = 250;
         sl_bins_step = 35;         
-     case 'vertebrae12/'
+     case 'vertebrae12_psuiteSL1/'
         glac_18_sl = 2086 ; 
         glac_11_sl = 2094 ; 
         mb_bins_step = 250;
-        sl_bins_step = 35; 
+        sl_bins_step = 50; 
      case 'vertebrae25/'
         glac_18_sl = 2001 ; 
         glac_11_sl = 2001 ; 
@@ -228,7 +228,7 @@ switch glac
         plot([glac_18_sl, glac_18_sl], [0,max(mb_prob(:))],'--k');  %top elev
         xlim([1650 1860])  
         ylim([0 0.62])
-      case 'vertebrae12/'
+      case 'vertebrae12_psuiteSL1/'
         plot([glac_18_sl, glac_18_sl], [0,max(mb_prob(:))],'--k');  %top elev
         plot([glac_11_sl, glac_11_sl], [0,max(mb_prob(:))],'--k');  %top elev
         xlim([1700 2150])  

@@ -6,7 +6,7 @@
 % this script isnt used for attribution calculations- just model calibration
 
 run_years=1980:2016;
-glac = 'vertebrae25';
+glac = 'chancellor';
 pltsl = 0; % 1 to plot snowlines 
 
 

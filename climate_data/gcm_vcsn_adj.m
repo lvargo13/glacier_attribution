@@ -16,9 +16,9 @@ clear
 % of repeating times 
 
 %--- User input -------- 
-glac = 'parkpass/';  % name of glacier, e.g. 'rolleston/'
-lat_glac = -44.59 ;  % parkpass
-lon_glac = 168.23 ;
+glac = 'brewster/';  % name of glacier, e.g. 'rolleston/'
+lat_glac = -44.0728; 
+lon_glac = 169.436 ;
 
 GCM = 1;  % 1 to run, 0 to not
 CESM = 1; 

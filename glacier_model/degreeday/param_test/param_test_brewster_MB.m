@@ -2,11 +2,11 @@
 % to find the optimum mass balance parameters for all years for brewster mass balance
 
 % input data:
-r1= -1900; % min and max SL range for plotting scatter plot  
-r2 = 1500;
-ann_thresh = 600; % threshold for annual RMSE for parameters used
+% r1= 1600; % min and max SL range for plotting scatter plot  
+% r2 = 2300;
+ann_thresh = 580; % threshold for annual RMSE for parameters used
 mean_thresh = 80; % threshold for mean RMSE for parameters used
-figsave = 1; % 1 to save figs and write text output, 0 not to (generally check first then save)
+figsave = 0; % 1 to save figs and write text output, 0 not to (generally check first then save)
 
 %%%%%%%%%%%%%%%%
 savedat = 'brewster_psuite.mat' ; %file to save for input to run att
@@ -41,27 +41,27 @@ radf = 0.13:0.01:0.25 ;
 
 rmserr_rs = reshape(rmserr,length(radf),length(ddf));
 
-% figure; 
+figure; 
 % subplot(2,2,1); imagesc(radf,ddf,rmserr_rs')
 % xlabel('radiation factor')
 % ylabel('temperature factor')
 % colorbar; title('annual mb rmse (mm w.e.)')
-% 
-% subplot(2,2,3); imagesc(radf,ddf,rmserr_rs')
-% xlabel('radiation factor')
-% ylabel('temperature factor')
-% colorbar; title('annual mb rmse (mm w.e.)'); caxis([560 600])
-% 
-% mmb_rmse = reshape(mmb_rms,length(radf),length(ddf));
+
+subplot(1,2,1); imagesc(radf,ddf,rmserr_rs')
+xlabel('radiation factor')
+ylabel('temperature factor')
+colorbar; title('annual mb rmse (mm w.e.)'); caxis([560 577])
+
+mmb_rmse = reshape(mmb_rms,length(radf),length(ddf));
 % subplot(2,2,2); imagesc(radf,ddf,mmb_rmse')
 % xlabel('radiation factor')
 % ylabel('temperature factor')
 % colorbar; title('mean mb rmse (mm w.e.)')
-% 
-% subplot(2,2,4); imagesc(radf,ddf,mmb_rmse')
-% xlabel('radiation factor')
-% ylabel('temperature factor')
-% colorbar; title('mean mb rmse (mm w.e.)'); caxis([0 80])
+
+subplot(1,2,2); imagesc(radf,ddf,mmb_rmse')
+xlabel('radiation factor')
+ylabel('temperature factor')
+colorbar; title('mean mb rmse (mm w.e.)'); caxis([0 79])
 
 % l_mb = min(rmserr);
 % lf_mb = find(rmserr==l_mb);
@@ -104,11 +104,11 @@ if figsave == 1
     saveas(gcf,'/Volumes/arc_03/vargola/brewster_MB_caliball.pdf')
 end
 
-figure; plot(measmb,mmb_all(D(:),:),'.k'); hold on
-plot([r1, r2], [r1, r2],'--k'); 
-xlabel('measured snowline'); ylabel('modeled snowline')
-xlim([r1 r2]); ylim([r1 r2])
-if figsave == 1
-    saveas(gcf,'/Volumes/arc_03/vargola/brewster_MB_scatter.pdf')
-end
+% figure; plot(measmb,mmb_all(D(:),:),'.k'); hold on
+% plot([r1, r2], [r1, r2],'--k'); 
+% xlabel('measured snowline'); ylabel('modeled snowline')
+% xlim([r1 r2]); ylim([r1 r2])
+% if figsave == 1
+%     saveas(gcf,'/Volumes/arc_03/vargola/brewster_MB_scatter.pdf')
+% end
 

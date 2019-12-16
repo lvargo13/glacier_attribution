@@ -2,20 +2,20 @@
 % need to do a manual clear all before running (whos global )
 
 % input: 
-gla = 'ridge'; 
-lat = -43.620 ;  % ridge
+gla = 'vertebrae25'; 
+lat = -43.32 ;  % vertebrae
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 indat = [gla '_psuiteSL.mat'];
-load(['/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test_postreview/',indat])
+load(['/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test/',indat])
 glacs_in = [gla '/'];
 dem_fs = [gla '_10m.nc'];  % needs to be in /nc_input/
 rad_dem_f = [gla '_pdd.tif'] ; 
 
 type = {'gcm'; 'cesm'}; 
 
-for j = 1:19; %1:length(glacs_out)
+for j = 17:length(glacs_out)
 for k = 1:length(type)
     
     dem_file=dem_fs; % needs to be in /in_pre

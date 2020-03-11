@@ -8,9 +8,13 @@
 % 2) index of best run in parameter sweep (param_test_SL.m)
 
 
-gla = 'vertebrae25';
-ind = 1417; % index of best run (from param_test_SL.m)
-
+gla = 'rolleston';
+ind = 54 ;%for subset % index of best run (from param_test_SL.m)
+la = 120; 
+ddf = 0.5:0.3:1.7;
+radf = 0.13:0.03:0.22 ;
+ta = -2:0.45:-0.65;
+pa = 0.8:0.45:1.25 ;
 
 %%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,19 +37,28 @@ mw_m = meassl(yrout);
 meassl(yrout) = [];  % delete year out
 m = nanmean(meassl);
 
-mmb_all = zeros(length(fils),1);
-mmb_rms = zeros(length(fils),1);
-rmserr = zeros(length(fils),1);
-tf_all = zeros(length(fils),1);
-rf_all = zeros(length(fils),1);
-mw = zeros(length(fils),1);
+mmb_all = [];
+mmb_rms = [];
+rmserr = [];
+% tf_all = [];
+% rf_all = [];
+mw = [];
 for i = 1:length(fils)
    load([fils_path fils(i).name]) 
-   mw(i) = ela(yrout);
-   ela(yrout)=[]; 
-   mmb_all(i) = mean(ela);
-   mmb_rms(i) = sqrt( ((nanmean(ela) -m).^2));
-   rmserr(i) = sqrt(nanmean((ela' - meassl).^2));
+   dt = find((abs(ddf-CONFIG.DegreeDay.DDF)<0.001)) ;
+   dr = find((abs(radf-CONFIG.DegreeDay.RadiationFactor)<0.001)) ;    
+   dta = find((abs(ta-CONFIG.DegreeDay.TempOffset)<0.001)) ;
+   dpa = find((abs(pa-CONFIG.DegreeDay.PptnFactor)<0.001)) ;
+   if (~isempty(dt) && ~isempty(dr) && ~isempty(dta) && ~isempty(dpa))
+       if length(rmserr) == ind
+           ela_best = ela; 
+       end
+       mw = [mw ela(yrout)];
+       ela(yrout)= []; 
+       mmb_all = [mmb_all mean(ela)];
+       mmb_rms = [mmb_rms sqrt( ((nanmean(ela) -m).^2))];
+       rmserr = [rmserr sqrt(nanmean((ela' - meassl).^2))];
+   end
 end
 
 l_mb = min(rmserr);
@@ -89,6 +102,11 @@ else
        lf_mmb = find(mmb_rms<l_mmb+8);
        C = intersect(lf_mb,lf_mmb);
    end 
+   if isempty(C) == 1 ; % is empty
+       lf_mb = find(rmserr<l_mb+10); 
+       lf_mmb = find(mmb_rms<l_mmb+10);
+       C = intersect(lf_mb,lf_mmb);
+   end 
 end
 
 if length(C) > 1  % get C to 1
@@ -105,15 +123,9 @@ yr_var(j,3) = mmb_rms(C);
 yr_var(j,1) = sqrt((mw_m-mw(C)).^2); 
 end
 
+% to get one best run, for leave-one-year-out test
 
-% load file of best model run parameters to compare
-fils_path = ['/Volumes/arc_03/vargola/glacier_attribution/glacier_model/degreeday/param_test/' gla 'SL/']; 
-fils = dir([fils_path '*.mat']);
-fils = fils(~[fils.isdir]);
-[~,idx] = sort([fils.datenum]);
-fils = fils(idx);
-load([fils_path fils(ind).name])
-mod_SL = sqrt((SL' - ela).^2); 
+mod_SL = sqrt((SL' - ela_best).^2); 
 
 % now get variation for each year, for best calib vs best calib when year
 % left out

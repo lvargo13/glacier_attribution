@@ -82,6 +82,14 @@ bootstrp_sl_prob.m for no parameter sweep
 bootstrp_sl_prob_loop.m for 1 glacier with multiple parameter options
 outputs: prints in command line the probababilites and likelihoods 
 
+as of 03/2020, use: 
+PDDout_loop_hist.m: loop through multiple glaciers with multiple parameter options, includes bootstrapping fn (boostrp_mb_fn.m)
+output: histograms, mean probabilities and likelihoods, 5-95% probabilities and likelihoods 
+saves output (.fig of histogram and .mat of data) if wanted
+
+PDDout_gcm_cesm.m: gives probabilities (just mean) for CMIP5 and CESM ensembles seperatly (for supplemental table)
+output: saves .mat file of data for each glacier and ensemble (CMIP5 v CESM)
+
 
 
 
